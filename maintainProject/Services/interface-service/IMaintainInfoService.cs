@@ -11,7 +11,7 @@ namespace maintainProject.Services.interface_service
         public IList<MaintainInfo> getMaintainInfoList();
         public MaintainInfo getMaintainInfoByID(int maintain_item_id);
         public HttpResultModel insertMaintainInfoList(MaintainInfo maintainInfo);
-        public HttpResultModel updateMaintainInfoList(int maintain_item_id);
+        public HttpResultModel updateMaintainInfoList(MaintainInfo maintainInfo);
         public HttpResultModel deleteMaintainInfoList(int maintain_item_id);
 
 

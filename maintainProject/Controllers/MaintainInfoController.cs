@@ -37,5 +37,17 @@ namespace maintainProject.Controllers
         {
             return _maintainInfoService.insertMaintainInfoList(maintainInfo);
         }
+
+        [HttpPut]
+        public HttpResultModel Update(MaintainInfo maintainInfo) 
+        {
+            return _maintainInfoService.updateMaintainInfoList(maintainInfo);
+        }
+
+        [HttpDelete]
+        public HttpResultModel Delete(MaintainInfo maintainInfo)
+        {
+            return _maintainInfoService.deleteMaintainInfoList(maintainInfo.MaintainItemId);
+        }
     }
 }

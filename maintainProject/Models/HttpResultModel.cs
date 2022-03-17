@@ -9,7 +9,6 @@ namespace maintainProject.Models
     {
         public int _status_code { get; set; }
         public string _message { get; set; }
-
       
 
     }

@@ -28,14 +28,14 @@ namespace maintainProject.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;port=3306;database=maintain_repair;user=root;password=1234", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.6.0-mariadb"));
+                optionsBuilder.UseMySql("server=localhost;port=3306;database=maintain;user=root;password=1234", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasCharSet("latin1")
-                .UseCollation("latin1_swedish_ci");
+            modelBuilder.HasCharSet("utf8")
+                .UseCollation("utf8_general_ci");
 
             modelBuilder.Entity<EquipmentInfo>(entity =>
             {
@@ -44,10 +44,11 @@ namespace maintainProject.Models
 
                 entity.ToTable("equipment_info");
 
-                entity.HasComment("設備基本資訊");
+                entity.HasComment("設備基本資訊")
+                    .HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
                 entity.Property(e => e.EquipmentId)
-                    .HasColumnType("int(11)")
                     .ValueGeneratedNever()
                     .HasColumnName("equipment_id");
 
@@ -58,18 +59,24 @@ namespace maintainProject.Models
                 entity.Property(e => e.CrtUserId)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("crt_user_id");
+                    .HasColumnName("crt_user_id")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.EquipmentName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("equipment_name");
+                    .HasColumnName("equipment_name")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.EquipmentStatus)
                     .HasMaxLength(1)
                     .HasColumnName("equipment_status")
                     .HasDefaultValueSql("'0'")
-                    .IsFixedLength(true);
+                    .IsFixedLength(true)
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.IsStop)
                     .HasColumnType("bit(1)")
@@ -84,11 +91,11 @@ namespace maintainProject.Models
 
                 entity.ToTable("maintain_info");
 
-                entity.HasComment("保養基本資料");
+                entity.HasComment("保養基本資料")
+                    .HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.MaintainItemId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("maintain_item_id");
+                entity.Property(e => e.MaintainItemId).HasColumnName("maintain_item_id");
 
                 entity.Property(e => e.CrtDatetime)
                     .HasColumnType("datetime")
@@ -97,18 +104,24 @@ namespace maintainProject.Models
                 entity.Property(e => e.CrtUserId)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("crt_user_id");
+                    .HasColumnName("crt_user_id")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.MaintainItemName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("maintain_item_name");
+                    .HasColumnName("maintain_item_name")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.MaintainType)
                     .IsRequired()
                     .HasMaxLength(1)
                     .HasColumnName("maintain_type")
-                    .IsFixedLength(true);
+                    .IsFixedLength(true)
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
             });
 
             modelBuilder.Entity<MaintainPlan>(entity =>
@@ -119,28 +132,30 @@ namespace maintainProject.Models
 
                 entity.ToTable("maintain_plan");
 
-                entity.HasComment("保養計畫");
+                entity.HasComment("保養計畫")
+                    .HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.EquipmentId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("equipment_id");
+                entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
 
-                entity.Property(e => e.MaintainId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("maintain_id");
+                entity.Property(e => e.MaintainId).HasColumnName("maintain_id");
 
                 entity.Property(e => e.IsStop)
                     .HasMaxLength(1)
                     .HasColumnName("is_stop")
                     .HasDefaultValueSql("'0'")
-                    .IsFixedLength(true);
+                    .IsFixedLength(true)
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.MaintainStatus)
                     .HasMaxLength(1)
                     .HasColumnName("maintain_status")
                     .HasDefaultValueSql("'0'")
                     .IsFixedLength(true)
-                    .HasComment("未達保養時間、需保養、正在保養");
+                    .HasComment("未達保養時間、需保養、正在保養")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.NextMaintainDatetime)
                     .HasColumnType("datetime")
@@ -153,16 +168,18 @@ namespace maintainProject.Models
                 entity.Property(e => e.RegularDatetime)
                     .HasMaxLength(50)
                     .HasColumnName("regular_datetime")
-                    .HasComment("定期保養時間(每月五號)");
+                    .HasComment("定期保養時間(每月五號)")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.SpecialDatetime)
                     .HasMaxLength(50)
                     .HasColumnName("special_datetime")
-                    .HasComment("特定時間(每次保養時間隔10天)");
+                    .HasComment("特定時間(每次保養時間隔10天)")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
-                entity.Property(e => e.Times)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("times");
+                entity.Property(e => e.Times).HasColumnName("times");
             });
 
             modelBuilder.Entity<MaintainRecord>(entity =>
@@ -172,8 +189,10 @@ namespace maintainProject.Models
 
                 entity.ToTable("maintain_record");
 
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
+
                 entity.Property(e => e.RecordId)
-                    .HasColumnType("int(11)")
                     .ValueGeneratedNever()
                     .HasColumnName("record_id");
 
@@ -181,32 +200,36 @@ namespace maintainProject.Models
                     .HasColumnType("datetime")
                     .HasColumnName("end_datetime");
 
-                entity.Property(e => e.EquipmentId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("equipment_id");
+                entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
 
                 entity.Property(e => e.MaintainDesc)
                     .HasMaxLength(50)
-                    .HasColumnName("maintain_desc");
+                    .HasColumnName("maintain_desc")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
-                entity.Property(e => e.MaintainId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("maintain_id");
+                entity.Property(e => e.MaintainId).HasColumnName("maintain_id");
 
                 entity.Property(e => e.MaintainUserId)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("maintain_user_id")
-                    .HasComment("保養人員");
+                    .HasComment("保養人員")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.PassDesc)
                     .HasMaxLength(50)
-                    .HasColumnName("pass_desc");
+                    .HasColumnName("pass_desc")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.PassUserId)
                     .HasMaxLength(50)
                     .HasColumnName("pass_user_id")
-                    .HasComment("驗收人員");
+                    .HasComment("驗收人員")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.StartDatetime)
                     .HasColumnType("datetime")
@@ -217,7 +240,9 @@ namespace maintainProject.Models
                     .HasColumnName("status")
                     .HasDefaultValueSql("'0'")
                     .IsFixedLength(true)
-                    .HasComment("正在保養、待驗收、驗收不通過、保養完成");
+                    .HasComment("正在保養、待驗收、驗收不通過、保養完成")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
             });
 
             modelBuilder.Entity<UserInfo>(entity =>
@@ -227,24 +252,35 @@ namespace maintainProject.Models
 
                 entity.ToTable("user_info");
 
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
+
                 entity.Property(e => e.UserId)
                     .HasMaxLength(50)
-                    .HasColumnName("user_id");
+                    .HasColumnName("user_id")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.Department)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("department");
+                    .HasColumnName("department")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.Role)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("role");
+                    .HasColumnName("role")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("user_name");
+                    .HasColumnName("user_name")
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
             });
 
             OnModelCreatingPartial(modelBuilder);

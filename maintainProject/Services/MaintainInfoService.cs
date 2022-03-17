@@ -1,6 +1,7 @@
 ﻿using maintainProject.Models;
 using maintainProject.Services.interface_service;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,19 @@ namespace maintainProject.Services
 
         public HttpResultModel insertMaintainInfoList(MaintainInfo maintainInfo)
         {
-            if (!checkVaue(maintainInfo)) 
+            if (!checkValue(maintainInfo))
             {
                 return new HttpResultModel
                 {
                     _status_code = 400,
                     _message = "請檢查資料是否正確，必填欄位不可為空"
                 };
-
             }
 
             try
             {
                 _maintainContext.MaintainInfos.Add(maintainInfo);
+                _maintainContext.SaveChanges();
                 return new HttpResultModel
                 {
                     _status_code = 200,
@@ -60,21 +61,85 @@ namespace maintainProject.Services
             }
         }
 
-        public HttpResultModel updateMaintainInfoList(int maintain_item_id)
+        public HttpResultModel updateMaintainInfoList(MaintainInfo maintainInfo)
         {
-            throw new NotImplementedException();
+            try 
+            {
+                MaintainInfo model = _maintainContext.MaintainInfos
+                                                     .Where(x => x.MaintainItemId == maintainInfo.MaintainItemId)
+                                                     .FirstOrDefault();
+
+                if (model == null)
+                {
+                    return new HttpResultModel
+                    {
+                        _status_code = 400,
+                        _message = "查不到此筆資料"
+                    };
+                }
+
+                model.MaintainItemName = maintainInfo.MaintainItemName;
+                model.MaintainType = maintainInfo.MaintainType;
+                _maintainContext.SaveChanges();
+
+                return new HttpResultModel
+                {
+                    _status_code = 200,
+                    _message = "修改成功"
+                };
+            }
+            catch(Exception ex) 
+            {
+                return new HttpResultModel
+                {
+                    _status_code = 400,
+                    _message = "修改異常"
+                };
+            }   
         }
 
         public HttpResultModel deleteMaintainInfoList(int maintain_item_id)
         {
-            throw new NotImplementedException();
+            try 
+            {
+                MaintainInfo model = _maintainContext.MaintainInfos
+                                                      .Where(x => x.MaintainItemId == maintain_item_id)
+                                                      .FirstOrDefault();
+
+                if (model == null)
+                {
+                    return new HttpResultModel
+                    {
+                        _status_code = 400,
+                        _message = "查不到此筆資料"
+                    };
+                }
+
+                _maintainContext.MaintainInfos.Remove(model);
+                _maintainContext.SaveChanges();
+                return new HttpResultModel
+                {
+                    _status_code = 200,
+                    _message = "刪除成功"
+                };
+
+            }
+            catch(Exception ex) 
+            {
+                return new HttpResultModel
+                {
+                    _status_code = 400,
+                    _message = "刪除異常"
+                };
+            }
         }
 
-        private bool checkVaue(MaintainInfo maintainInfo) 
+        #region checkValue
+        private bool checkValue(MaintainInfo maintainInfo) 
         {
             bool result = true;
 
-            if (maintainInfo.MaintainItemId <= 0 || string.IsNullOrWhiteSpace(maintainInfo.MaintainItemName) ||
+            if (string.IsNullOrWhiteSpace(maintainInfo.MaintainItemName) ||
                 string.IsNullOrWhiteSpace(maintainInfo.MaintainType) || string.IsNullOrWhiteSpace(maintainInfo.CrtDatetime.ToString()) ||
                 string.IsNullOrWhiteSpace(maintainInfo.CrtUserId)) 
             {
@@ -83,5 +148,6 @@ namespace maintainProject.Services
 
             return result;
         }
+        #endregion
     }
 }

@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\NewUser\\Desktop\\test\\maintain-ef-core\\maintainProject\\maintainProject.csproj": {}
+    "D:\\Side_project\\maintain-ef-core\\maintainProject\\maintainProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\NewUser\\Desktop\\test\\maintain-ef-core\\maintainProject\\maintainProject.csproj": {
+    "D:\\Side_project\\maintain-ef-core\\maintainProject\\maintainProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\NewUser\\Desktop\\test\\maintain-ef-core\\maintainProject\\maintainProject.csproj",
+        "projectUniqueName": "D:\\Side_project\\maintain-ef-core\\maintainProject\\maintainProject.csproj",
         "projectName": "maintainProject",
-        "projectPath": "C:\\Users\\NewUser\\Desktop\\test\\maintain-ef-core\\maintainProject\\maintainProject.csproj",
-        "packagesPath": "C:\\Users\\NewUser\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\NewUser\\Desktop\\test\\maintain-ef-core\\maintainProject\\obj\\",
+        "projectPath": "D:\\Side_project\\maintain-ef-core\\maintainProject\\maintainProject.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "D:\\Side_project\\maintain-ef-core\\maintainProject\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\NewUser\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -69,6 +65,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.13, 3.1.13]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -77,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }
