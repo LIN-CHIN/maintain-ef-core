@@ -31,5 +31,11 @@ namespace maintainProject.Controllers
         {
             return _maintainInfoService.getMaintainInfoByID(maintain_item_id);
         }
+
+        [HttpPost]
+        public HttpResultModel Post(MaintainInfo maintainInfo) 
+        {
+            return _maintainInfoService.insertMaintainInfoList(maintainInfo);
+        }
     }
 }
