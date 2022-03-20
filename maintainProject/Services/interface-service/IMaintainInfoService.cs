@@ -8,11 +8,11 @@ namespace maintainProject.Services.interface_service
 {
     public interface IMaintainInfoService
     {
-        public IList<MaintainInfo> getMaintainInfoList();
-        public MaintainInfo getMaintainInfoByID(int maintain_item_id);
-        public HttpResultModel insertMaintainInfoList(MaintainInfo maintainInfo);
-        public HttpResultModel updateMaintainInfoList(MaintainInfo maintainInfo);
-        public HttpResultModel deleteMaintainInfoList(int maintain_item_id);
+        public IList<MaintainInfo> GetMaintainInfoList();
+        public MaintainInfo GetMaintainInfoByID(int maintain_item_id);
+        public HttpResultModel InsertMaintainInfoList(MaintainInfo maintainInfo);
+        public HttpResultModel UpdateMaintainInfoList(MaintainInfo maintainInfo);
+        public HttpResultModel DeleteMaintainInfoList(int maintain_item_id);
 
 
 

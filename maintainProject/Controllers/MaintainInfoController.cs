@@ -22,32 +22,32 @@ namespace maintainProject.Controllers
         [HttpGet]
         public IList<MaintainInfo> Get()
         {
-            return _maintainInfoService.getMaintainInfoList();
+            return _maintainInfoService.GetMaintainInfoList();
         }
 
         [HttpGet]
         [Route("{maintain_item_id}")]
         public MaintainInfo Get(int maintain_item_id)
         {
-            return _maintainInfoService.getMaintainInfoByID(maintain_item_id);
+            return _maintainInfoService.GetMaintainInfoByID(maintain_item_id);
         }
 
         [HttpPost]
         public HttpResultModel Post(MaintainInfo maintainInfo) 
         {
-            return _maintainInfoService.insertMaintainInfoList(maintainInfo);
+            return _maintainInfoService.InsertMaintainInfoList(maintainInfo);
         }
 
         [HttpPut]
         public HttpResultModel Update(MaintainInfo maintainInfo) 
         {
-            return _maintainInfoService.updateMaintainInfoList(maintainInfo);
+            return _maintainInfoService.UpdateMaintainInfoList(maintainInfo);
         }
 
         [HttpDelete]
         public HttpResultModel Delete(MaintainInfo maintainInfo)
         {
-            return _maintainInfoService.deleteMaintainInfoList(maintainInfo.MaintainItemId);
+            return _maintainInfoService.DeleteMaintainInfoList(maintainInfo.MaintainItemId);
         }
     }
 }

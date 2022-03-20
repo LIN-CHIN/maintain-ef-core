@@ -29,6 +29,7 @@ namespace maintainProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IMaintainInfoService, MaintainInfoService>();
+            services.AddTransient<IMaintainPlanService, MaintainPlanService>();
             services.AddTransient<MaintainContext>();
             services.AddControllers();
         }

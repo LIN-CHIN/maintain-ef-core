@@ -140,6 +140,15 @@ namespace maintainProject.Models
 
                 entity.Property(e => e.MaintainId).HasColumnName("maintain_id");
 
+                entity.Property(e => e.CrtDatetime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("crt_datetime");
+
+                entity.Property(e => e.CrtUserId)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("crt_user_id");
+
                 entity.Property(e => e.IsStop)
                     .HasMaxLength(1)
                     .HasColumnName("is_stop")
@@ -168,16 +177,14 @@ namespace maintainProject.Models
                 entity.Property(e => e.RegularDatetime)
                     .HasMaxLength(50)
                     .HasColumnName("regular_datetime")
-                    .HasComment("定期保養時間(每月五號)")
+                    .HasComment("定期保養時間(每月五號) ex: 1205 (每個12月的五號) , 9905(每個月五號))")
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
                 entity.Property(e => e.SpecialDatetime)
-                    .HasMaxLength(50)
+                    .HasColumnType("datetime")
                     .HasColumnName("special_datetime")
-                    .HasComment("特定時間(每次保養時間隔10天)")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .HasComment("特定時間 ex: 2022/03/20");
 
                 entity.Property(e => e.Times).HasColumnName("times");
             });

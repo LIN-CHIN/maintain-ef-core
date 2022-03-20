@@ -1,38 +1,36 @@
 ﻿using maintainProject.Models;
 using maintainProject.Services.interface_service;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace maintainProject.Services
 {
-    public class MaintainInfoService : IMaintainInfoService
+    public class MaintainPlanService : IMaintainPlanService
     {
         private readonly MaintainContext _maintainContext;
-        public MaintainInfoService(MaintainContext maintainContext) 
+        public MaintainPlanService(MaintainContext maintainContext) 
         {
-            _maintainContext = maintainContext; 
+            _maintainContext = maintainContext;
         }
 
-        public IList<MaintainInfo> GetMaintainInfoList()
+        public IList<MaintainPlan> GetMaintainPlanList()
         {
-            return _maintainContext.MaintainInfos.OrderBy(x => x.CrtDatetime)
+            return _maintainContext.MaintainPlans.OrderBy(x => x.CrtDatetime)
                                                  .ToList();
         }
 
-        public MaintainInfo GetMaintainInfoByID(int maintain_item_id)
+        public MaintainPlan GetMaintainPlanByID(int equipment_id, int maintain_id)
         {
-            return _maintainContext.MaintainInfos.Where(x => x.MaintainItemId == maintain_item_id)
-                                                 .FirstOrDefault();
+            return _maintainContext.MaintainPlans
+                                   .Where(x => x.EquipmentId == equipment_id && x.MaintainId == maintain_id)
+                                   .FirstOrDefault();
         }
 
-        public HttpResultModel InsertMaintainInfoList(MaintainInfo maintainInfo)
+        public HttpResultModel InsertMaintainPlan(MaintainPlan maintainPlan)
         {
-            if (!checkValue(maintainInfo))
+            if (!checkValue(maintainPlan))
             {
                 return new HttpResultModel
                 {
@@ -43,15 +41,15 @@ namespace maintainProject.Services
 
             try
             {
-                _maintainContext.MaintainInfos.Add(maintainInfo);
+                _maintainContext.MaintainPlans.Add(maintainPlan);
                 _maintainContext.SaveChanges();
                 return new HttpResultModel
                 {
                     _status_code = 200,
                     _message = "新增成功"
                 };
-            } 
-            catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 return new HttpResultModel
                 {
@@ -61,14 +59,14 @@ namespace maintainProject.Services
             }
         }
 
-        public HttpResultModel UpdateMaintainInfoList(MaintainInfo maintainInfo)
+        public HttpResultModel UpdateMaintainPlan(MaintainPlan maintainPlan)
         {
-            try 
+            try
             {
-                MaintainInfo model = _maintainContext.MaintainInfos
-                                                     .Where(x => x.MaintainItemId == maintainInfo.MaintainItemId)
+                MaintainPlan model = _maintainContext.MaintainPlans
+                                                     .Where(x => x.EquipmentId == maintainPlan.EquipmentId && 
+                                                                 x.MaintainId == maintainPlan.MaintainId)
                                                      .FirstOrDefault();
-
                 if (model == null)
                 {
                     return new HttpResultModel
@@ -78,8 +76,13 @@ namespace maintainProject.Services
                     };
                 }
 
-                model.MaintainItemName = maintainInfo.MaintainItemName;
-                model.MaintainType = maintainInfo.MaintainType;
+                model.RegularDatetime = maintainPlan.RegularDatetime;
+                model.Times = maintainPlan.Times;
+                model.SpecialDatetime = maintainPlan.SpecialDatetime;
+                model.PlanStartDatetime = maintainPlan.PlanStartDatetime;
+                model.NextMaintainDatetime = maintainPlan.NextMaintainDatetime;
+                model.IsStop = maintainPlan.IsStop;
+                model.MaintainStatus = maintainPlan.MaintainStatus;
                 _maintainContext.SaveChanges();
 
                 return new HttpResultModel
@@ -88,24 +91,23 @@ namespace maintainProject.Services
                     _message = "修改成功"
                 };
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return new HttpResultModel
                 {
                     _status_code = 400,
                     _message = "修改異常"
                 };
-            }   
+            }
         }
-
-        public HttpResultModel DeleteMaintainInfoList(int maintain_item_id)
+        public HttpResultModel DeleteMaintainPlan(int equipment_id, int maintain_id)
         {
-            try 
+            try
             {
-                MaintainInfo model = _maintainContext.MaintainInfos
-                                                      .Where(x => x.MaintainItemId == maintain_item_id)
+                MaintainPlan model = _maintainContext.MaintainPlans
+                                                      .Where(x => x.EquipmentId == equipment_id &&
+                                                                  x.MaintainId == maintain_id)
                                                       .FirstOrDefault();
-
                 if (model == null)
                 {
                     return new HttpResultModel
@@ -115,7 +117,7 @@ namespace maintainProject.Services
                     };
                 }
 
-                _maintainContext.MaintainInfos.Remove(model);
+                _maintainContext.MaintainPlans.Remove(model);
                 _maintainContext.SaveChanges();
                 return new HttpResultModel
                 {
@@ -124,7 +126,7 @@ namespace maintainProject.Services
                 };
 
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return new HttpResultModel
                 {
@@ -135,13 +137,13 @@ namespace maintainProject.Services
         }
 
         #region checkValue
-        private bool checkValue(MaintainInfo maintainInfo) 
+        private bool checkValue(MaintainPlan maintainPlan)
         {
             bool result = true;
 
-            if (string.IsNullOrWhiteSpace(maintainInfo.MaintainItemName) ||
-                string.IsNullOrWhiteSpace(maintainInfo.MaintainType) || string.IsNullOrWhiteSpace(maintainInfo.CrtDatetime.ToString()) ||
-                string.IsNullOrWhiteSpace(maintainInfo.CrtUserId)) 
+            if (maintainPlan.EquipmentId <= 0 || maintainPlan.MaintainId <= 0 || 
+                maintainPlan.PlanStartDatetime == null || maintainPlan.NextMaintainDatetime == null ||
+                maintainPlan.CrtDatetime == null || string.IsNullOrWhiteSpace(maintainPlan.CrtUserId))
             {
                 result = false;
             }
