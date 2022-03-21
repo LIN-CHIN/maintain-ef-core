@@ -28,6 +28,18 @@ namespace maintainProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // other codes....
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
             services.AddTransient<IMaintainInfoService, MaintainInfoService>();
             services.AddTransient<IMaintainPlanService, MaintainPlanService>();
             services.AddTransient<MaintainContext>();
@@ -45,6 +57,8 @@ namespace maintainProject
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
